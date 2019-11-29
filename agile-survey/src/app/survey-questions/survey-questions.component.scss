@@ -1,0 +1,59 @@
+@import '../../variables.scss';
+
+.options {
+    margin: 0 0 0 15px;
+    display: block;
+}
+.questions-list {
+    list-style-type: none;
+}
+
+/*Styles for scale options*/
+
+$border: double 3px $secondary;
+.rating_scale {
+  display: block !important;
+  text-align: center;
+  font-size: 0;
+  margin: 5% 0;
+  width: 100%;
+  & label {
+    width: 17%;
+  }
+  & span {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 0;
+    font-size: 25px;
+    font-weight:bold;
+    width:100%;
+    background: lightgrey;
+    color: white;
+    border-top: $border;
+    border-bottom: $border;
+    border-right: $border;
+  }
+  & span:hover {
+    background: gray;
+    color: $secondary;
+  }
+  & label:first-child span {
+    border-left: $border;
+    border-top-left-radius: 0.25em;
+    border-bottom-left-radius: 0.25em;
+  }
+  
+  & label:last-child span {
+    border-top-right-radius: 0.25em;
+    border-bottom-right-radius: 0.25em;
+  }
+  & .scale-options {
+    display: none;
+    
+    &:checked ~ span {
+      background: $primary;
+      color: #fff;
+    }
+  }
+}
+/*Styles for scale options ends*/

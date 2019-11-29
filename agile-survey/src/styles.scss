@@ -1,0 +1,99 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$agile-survey-primary: mat-palette($mat-indigo);
+$agile-survey-accent: mat-palette($mat-pink, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$agile-survey-warn: mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$agile-survey-theme: mat-light-theme($agile-survey-primary, $agile-survey-accent, $agile-survey-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($agile-survey-theme);
+
+/* You can add global styles to this file, and also import other style files */
+@import 'variables.scss';
+
+.wrapper {
+    padding: 3% 10%;
+}
+.cfg-logo {
+    width: 260px;
+    height: auto;
+}
+.text-20 {
+    font-size: 20px;
+}
+.no-margin {
+    margin: 0px;
+}
+.surveyWrapper {
+    box-shadow: 0px 0px 6px 5px grey;
+}
+.progress {
+    height: 2rem;
+}
+.progress-bar {
+    background-color: $secondary;
+    height: 100%;
+}
+.hide {
+    display: none;
+}
+.app-button {
+    background-color: $secondary;
+    border: none;
+    width: 80px;
+    font-size: 20px;
+    color: white;
+    border-radius: 5px;
+}
+.app-link {
+    background: none;
+    border: none;
+    color: $secondary;
+    text-decoration: underline;
+}
+.app-textarea {
+    height: 100px;
+    width: 100%;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+/*customizing material progress bar */
+.mat-step-label {
+    min-width: 0px !important;
+}
+.mat-stepper-horizontal-line {
+    border-top-width: 5px !important;
+    border-color: $secondary;
+}
+.mat-horizontal-stepper-header .mat-step-icon {
+    margin-right: 0px !important;
+}
+.thankyouIcon {
+    font-size: 100px;
+    color: $primary;
+}
+.error-message {
+    color: $red;
+    text-align: center;
+    font-weight: bold;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,0 +1,226 @@
+<div class="row m-3">
+  <div class="col-md-12 surveyWrapper">
+    <form [formGroup]="formGroup">
+      <!--Dynamic stepper which adjusts based on total number of questions-->
+      <mat-horizontal-stepper linear #stepper>
+        <ng-template matStepperIcon="edit">
+          <mat-icon>done_outline</mat-icon>
+        </ng-template>
+        <!--step 1-->
+        <mat-step formGroupName="step1" [stepControl]="formGroup.get('step1')">
+          <p *ngIf="invalid" class="error-message">*All fields are mandatory</p>
+          <!--grouping all the questions in a list-->
+          <div *ngFor="let items of questions; let i = index; first as isFirst; last as isLast">
+            <div *ngIf="i==0">
+              <ul class="questions-list">
+                <li *ngFor="let question of items">
+                  <div *ngIf="question.question_type==1">
+                    <!--displaying options-->
+                    <div>
+                      {{question.question_id}}. {{question.question}}
+                    </div>
+                    <!--displaying options of the questions only if options are not null-->
+                    <mat-radio-group aria-label="Select an option" name={{question.question_id}}
+                      formControlName="{{question.question_id}}">
+                      <mat-radio-button value="question.option_1" class="options" *ngIf="question.option_1">
+                        {{question.option_1}}</mat-radio-button>
+                      <mat-radio-button value="question.option_2" class="options" *ngIf="question.option_2">
+                        {{question.option_2}}</mat-radio-button>
+                      <mat-radio-button value="question.option_3" class="options" *ngIf="question.option_3">
+                        {{question.option_3}}</mat-radio-button>
+                      <mat-radio-button value="question.option_4" class="options" *ngIf="question.option_4">
+                        {{question.option_4}}</mat-radio-button>
+                      <mat-radio-button value="question.option_5" class="options" *ngIf="question.option_5">
+                        {{question.option_5}}</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                  <!--textarea if question type is 2-->
+                  <div *ngIf="question.question_type==2">
+                    <div>
+                      {{question.question_id}}. {{question.question}}
+                    </div>
+                    <textarea matInput type="text" class="app-textarea" maxlength="250"
+                      formControlName="{{question.question_id}}"></textarea>
+                  </div>
+                  <!--scale if question type is 3-->
+                  <div *ngIf="question.question_type==3">
+                    <div>
+                      {{question.question_id}}. {{question.question}}
+                    </div>
+                    <div class="rating_scale">
+                      <label><input type="radio" name={{question.question_id}} value="1" class="scale-options"
+                          formControlName="step1" /><span>1</span></label>
+                      <label><input type="radio" name={{question.question_id}} value="2" class="scale-options"
+                          formControlName="{{question.question_id}}" /><span>2</span></label>
+                      <label><input type="radio" name={{question.question_id}} value="3" class="scale-options"
+                          formControlName="{{question.question_id}}" /><span>3</span></label>
+                      <label><input type="radio" name={{question.question_id}} value="4" class="scale-options"
+                          formControlName="{{question.question_id}}" /><span>4</span></label>
+                      <label><input type="radio" name={{question.question_id}} value="5" class="scale-options"
+                          formControlName="{{question.question_id}}" /><span>5</span></label>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <!--buttons-->
+              <div class="row">
+                <div class="col-md-12 text-right">
+                  <button mat-button class="app-link m-3" (click)="SaveLater()">Save for Later</button>
+                  <button mat-button matStepperNext class="app-button" (click)="nextClick('step1')">Next</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-step>
+        <!--step 2-->
+        <mat-step formGroupName="step2" [stepControl]="formGroup.get('step2')">
+          <p *ngIf="invalid" class="error-message">*All fields are mandatory</p>
+          <!--grouping all the questions in a list-->
+          <div *ngFor="let items of questions; let i = index; first as isFirst; last as isLast">
+            <div *ngIf="i==1">
+              <ul class="questions-list">
+                <li *ngFor="let question of items">
+                 <!--radio buttons if question type is 1-->
+                  <div *ngIf="question.question_type==1">
+                    <div>
+                      {{question.question_id}}. {{question.question}}
+                    </div>
+                    <!--displaying options of the questions only if options are not null-->
+                    <mat-radio-group aria-label="Select an option" name={{question.question_id}}
+                      formControlName="{{question.question_id}}">
+                      <mat-radio-button value="question.option_1" class="options" *ngIf="question.option_1">
+                        {{question.option_1}}</mat-radio-button>
+                      <mat-radio-button value="question.option_2" class="options" *ngIf="question.option_2">
+                        {{question.option_2}}</mat-radio-button>
+                      <mat-radio-button value="question.option_3" class="options" *ngIf="question.option_3">
+                        {{question.option_3}}</mat-radio-button>
+                      <mat-radio-button value="question.option_4" class="options" *ngIf="question.option_4">
+                        {{question.option_4}}</mat-radio-button>
+                      <mat-radio-button value="question.option_5" class="options" *ngIf="question.option_5">
+                        {{question.option_5}}</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                   <!--textarea if question type is 2-->
+                  <div *ngIf="question.question_type==2">
+                    <div>
+                      {{question.question_id}}. {{question.question}}
+                    </div>
+                    <textarea matInput type="text" class="app-textarea" maxlength="250"
+                      formControlName="{{question.question_id}}"></textarea>
+                  </div>
+                  <!--scale if question type is 3-->
+                  <div *ngIf="question.question_type==3">
+                    <div>
+                      {{question.question_id}}. {{question.question}}
+                    </div>
+                    <div class="rating_scale">
+                      <label><input type="radio" name={{question.question_id}} value="1" class="scale-options"
+                          formControlName="{{question.question_id}}" /><span>1</span></label>
+                      <label><input type="radio" name={{question.question_id}} value="2" class="scale-options"
+                          formControlName="{{question.question_id}}" /><span>2</span></label>
+                      <label><input type="radio" name={{question.question_id}} value="3" class="scale-options"
+                          formControlName="{{question.question_id}}" /><span>3</span></label>
+                      <label><input type="radio" name={{question.question_id}} value="4" class="scale-options"
+                          formControlName="{{question.question_id}}" /><span>4</span></label>
+                      <label><input type="radio" name={{question.question_id}} value="5" class="scale-options"
+                          formControlName="{{question.question_id}}" /><span>5</span></label>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+               <!--buttons-->
+              <div class="row">
+                <div class="col-md-6 text-left">
+                  <button mat-button matStepperPrevious class="app-button">Back</button>
+                </div>
+                <div class="col-md-6 text-right">
+                  <button mat-button class="app-link m-3" (click)="SaveLater()">Save for Later</button>
+                  <button mat-button matStepperNext class="app-button" (click)="nextClick('step2')">Next</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-step>
+        <!--step 3-->
+        <mat-step formGroupName="step3" [stepControl]="formGroup.get('step3')">
+          <div *ngFor="let items of questions; let i = index; first as isFirst; last as isLast">
+            <div *ngIf="i==2">
+              <p *ngIf="invalid" class="error-message">*All fields are mandatory</p>
+              <!--grouping all the questions in a list-->
+              <ul class="questions-list">
+                <li *ngFor="let question of items">
+                   <!--radio buttons if question type is 1-->
+                  <div *ngIf="question.question_type==1">
+                    <div>
+                      {{question.question_id}}. {{question.question}}
+                    </div>
+                    <!--displaying options of the questions only if options are not null-->
+                    <mat-radio-group aria-label="Select an option" name={{question.question_id}}
+                      formControlName="{{question.question_id}}">
+                      <mat-radio-button value="question.option_1" class="options" *ngIf="question.option_1">
+                        {{question.option_1}}</mat-radio-button>
+                      <mat-radio-button value="question.option_2" class="options" *ngIf="question.option_2">
+                        {{question.option_2}}</mat-radio-button>
+                      <mat-radio-button value="question.option_3" class="options" *ngIf="question.option_3">
+                        {{question.option_3}}</mat-radio-button>
+                      <mat-radio-button value="question.option_4" class="options" *ngIf="question.option_4">
+                        {{question.option_4}}</mat-radio-button>
+                      <mat-radio-button value="question.option_5" class="options" *ngIf="question.option_5">
+                        {{question.option_5}}</mat-radio-button>
+                    </mat-radio-group>
+                  </div>
+                   <!--textarea if question type is 2-->
+                  <div *ngIf="question.question_type==2">
+                    <div>
+                      {{question.question_id}}. {{question.question}}
+                    </div>
+                    <textarea class="app-textarea" maxlength="250"
+                      formControlName="{{question.question_id}}"></textarea>
+                  </div>
+                   <!--scale if question type is 3-->
+                  <div *ngIf="question.question_type==3">
+                    <div>
+                      {{question.question_id}}. {{question.question}}
+                    </div>
+                    <div class="rating_scale">
+                      <label><input type="radio" name={{question.question_id}} value="1" class="scale-options"
+                          formControlName="{{question.question_id}}" /><span>1</span></label>
+                      <label><input type="radio" name={{question.question_id}} value="2" class="scale-options"
+                          formControlName="{{question.question_id}}" /><span>2</span></label>
+                      <label><input type="radio" name={{question.question_id}} value="3" class="scale-options"
+                          formControlName="{{question.question_id}}" /><span>3</span></label>
+                      <label><input type="radio" name={{question.question_id}} value="4" class="scale-options"
+                          formControlName="{{question.question_id}}" /><span>4</span></label>
+                      <label><input type="radio" name={{question.question_id}} value="5" class="scale-options"
+                          formControlName="{{question.question_id}}" /><span>5</span></label>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+               <!--buttons-->
+              <div class="row">
+                <div class="col-md-6 text-left">
+                  <button mat-button matStepperPrevious class="app-button">Back</button>
+                </div>
+                <div class="col-md-6 text-right">
+                  <button mat-button class="app-link m-3" (click)="SaveLater()">Save for Later</button>
+                  <button type="submit" matStepperNext mat-button class="app-button"
+                    (click)="onSubmit()">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-step>
+         <!--Thank you step-->
+        <mat-step>
+          <div class="col-md-12 text-center">
+            <i class="material-icons thankyouIcon">thumb_up_alt</i><br>
+            <label>Thank you for your feedback!</label>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </form>
+  </div>
+</div>
+
+<!--<div *ngFor="let items of questions; let i = index; first as isFirst; last as isLast">-->

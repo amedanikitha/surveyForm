@@ -1,0 +1,40 @@
+<div class="wrapper">
+  <!--participants landing page-->
+  <div *ngIf="router.url === '/survey'; else launchingSurveyPage">
+    <div class="row">
+      <div class="logo col-md-6">
+        <img class="cfg-logo" src="assets/cfg-logo.png">
+      </div>
+      <div class="col-md-6 text-right">
+        <label>
+          This survey ends in 
+          <span class="text-danger">{{formattedtimeLeft}}</span>
+        </label>
+      </div>
+    </div>
+    <div class="primary-background header-block">
+      <label class="text-white header-text">Your feedback is valuable for us!</label>
+    </div>
+    <div class="survey-info">
+      <a class="app-link text-right d-block" [routerLink]="['/LaunchSurvey']">Launch Survey</a>
+      <label class="text-center w-100 text-20">Welcome to <span class="primary-text">{{surveytype}} -
+          {{surveyid}}</span></label>
+      <label class="text-center w-100 text-20">This survey is assigned by <span
+          class="primary-text">{{managerName}}</span></label>
+    </div>
+  </div>
+  <!--initiator/admin landing page-->
+  <ng-template #launchingSurveyPage>
+    <div class="row">
+      <div class="logo col-md-6">
+        <img class="cfg-logo" src="assets/cfg-logo.png">
+      </div>
+    </div>
+    <div class="primary-background header-block">
+      <div>
+        <label class="text-white header-text d-block text-center">Welcome to our Survey Launching System!</label>
+      </div>
+    </div>
+  </ng-template>
+<router-outlet></router-outlet>
+</div>

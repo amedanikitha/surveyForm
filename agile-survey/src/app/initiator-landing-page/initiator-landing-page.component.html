@@ -1,0 +1,66 @@
+<div class="landingPage surveyWrapper">
+    <label class="text-center d-block">Follow the Simple steps listed below to create and launch survey</label>
+    <div class="steps">
+        <mat-vertical-stepper linear #stepper>
+            <!--step1-->
+            <mat-step [stepControl]="firstFormGroup">
+                <form [formGroup]="firstFormGroup">
+                    <ng-template matStepLabel><label class="text-20 no-margin">Choose Your survey type:</label></ng-template>
+                    <mat-form-field  class="w-50 d-block">
+                        <mat-label>Survey Type</mat-label>
+                        <mat-select formControlName="selectSurveyType" class="d-inline">
+                            <mat-option *ngFor="let survey of surveys" [value]="survey.value">
+                            {{survey.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div>
+                        <button mat-button matStepperNext class="app-button">Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <!--step2-->
+            <mat-step [stepControl]="secondFormGroup">
+                <form [formGroup]="secondFormGroup">
+                <ng-template matStepLabel><label class="text-20 no-margin">Choose Participants</label></ng-template>
+                <mat-form-field class="w-50 d-block">
+                    <mat-label>Participant Type</mat-label>
+                    <mat-select formControlName="selectParticipants" class="d-inline" (ngModelChange)="particpantChange($event)">
+                        <mat-option *ngFor="let participant of participants" [value]="participant.value">
+                        {{participant.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div *ngIf="showSearch" class="w-50 d-block" >
+                    <mat-form-field class="w-100">
+                        <input matInput placeholder="Participants Name" formControlName="ParticipantName" />
+                        <i class="material-icons material-search">search</i>
+                    </mat-form-field>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-xs-6">
+                        <button mat-button matStepperPrevious class="app-button">Back</button>
+                    </div>
+                    <div class="col-md-6 col-xs-6">
+                        <button mat-button matStepperNext class="app-button">Next</button>
+                    </div>
+                </div>
+                </form>
+            </mat-step>
+            <!--step3-->
+            <mat-step [stepControl]="thirdFormGroup">
+                <form [formGroup]="thirdFormGroup">
+                    <ng-template matStepLabel><label class="text-20 no-margin">Schedule Survey</label></ng-template>
+                    <label class="m-3">Start Date: </label>
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="startDate" placeholder="Choose a date"> 
+                        <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                        <mat-datepicker #startDate></mat-datepicker>
+                    </mat-form-field>
+                    <ngb-timepicker formControlName="startTime"></ngb-timepicker>
+                </form>
+            </mat-step>
+        </mat-vertical-stepper>
+    </div>
+</div>

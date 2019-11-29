@@ -1,0 +1,43 @@
+@import '../variables.scss';
+.mySvg{
+    background-color: cadetblue;
+}
+.primary-background {
+    background: $primary;
+}
+
+.primary-text {
+    color: $primary;
+}
+
+.header-block {
+    margin: 10px 0;
+    padding: 7px;
+}
+.header-text {
+    margin-bottom: 0;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/*stepper styles */
+.steps-text {
+    background: gray;
+    width: 40px;
+    color: white;
+    font-size: 25px;
+    border-radius: 50%;
+}
+.line {
+    border-bottom: 5px double #009d78;
+    display: block;
+    height: 20px;
+}
+.active-step {
+    background: #0696de;
+}
+.completed-step {
+    background-color: #009d78;
+}
+/*stepper styles ends*/
+
