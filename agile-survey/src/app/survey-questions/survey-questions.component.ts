@@ -20,7 +20,6 @@ export class SurveyQuestionsComponent implements OnInit {
   constructor(private surveyService: SurveyService) { }
 
   ngOnInit() {
-    
     this.getQuestions();
 
     // splitting the main array into sub arrays to make stepper dynamic 
