@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { SurveyService } from '../survey.service'
+import { FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
+import { SurveyService } from '../survey.service';
 
 @Component({
   selector: 'app-survey-questions',
@@ -8,64 +8,43 @@ import { SurveyService } from '../survey.service'
   styleUrls: ['./survey-questions.component.scss']
 })
 export class SurveyQuestionsComponent implements OnInit {
- 
+
   isLinear = true;
-  formGroup: FormGroup;
   questions: any;
-  // finding the length of questions
-  questionsLength : number;
-  response;
-  invalid:boolean = false;
+  formGroup: FormGroup;
+  questionGroups: FormGroup[] = [];
+  invalid = false;
+  response: any;
 
   constructor(private surveyService: SurveyService) { }
 
   ngOnInit() {
-    this.getQuestions();
+    // Define number of questions on each page
+    const numQuestions = 5;
 
-    // splitting the main array into sub arrays to make stepper dynamic 
-    let result = [];
-    for(let i=0; i<this.questions.length; i++){
-      if(i%(Math.round(this.questions.length/3)) === 0)  
-        result.push(this.questions.slice(i, i+(Math.round(this.questions.length/3))))
+    // Get all questions from the service
+    this.questions = this.surveyService.getQuestions().questions;
+
+    // Create a group of inputs, with each group containing 5 questions
+    const formGroup = {};
+    for (let i = 0; i <= this.questions.length / numQuestions; i++) {
+      const controls = {};
+      for (let j = i * numQuestions; j < Math.min((i * numQuestions) + numQuestions, this.questions.length); j++) {
+        controls[this.questions[j].question_id] = this.questions[j].question_type === 2 ? new FormControl() : new FormControl('', Validators.required);
+      }
+      this.questionGroups.push(new FormGroup(controls));
+      formGroup[i] = this.questionGroups[i];
     }
-    //modifying the questions array to get steps
-    this.questions = result;
-    
-    //mandating fields except textarea in form step by step
-    let group1:any = {}
-    result[0].forEach(question => {
-      group1[question.question_id] = question.question_type==2 ? new FormControl('') : new FormControl('',Validators.required)
-    });
-    let group2:any = {}
-    result[1].forEach(question => {
-      group2[question.question_id] = question.question_type==2 ? new FormControl('') : new FormControl('',Validators.required)
-    });
-    let group3:any = {}
-    result[2].forEach(question => { 
-      group3[question.question_id] = question.question_type==2 ? new FormControl('') : new FormControl('',Validators.required)  
-    });
 
-    //passing the validations in each step
-    this.formGroup = new FormGroup({
-      'step1': new FormGroup(group1),
-      'step2': new FormGroup(group2),
-      'step3': new FormGroup(group3)
-    });
+    this.formGroup = new FormGroup(formGroup);
   }
 
-  /**
-   * get questions from service
-   * @params null
-   */
-  getQuestions(): void {
-    this.questions = this.surveyService.getQuestions();
-    this.questions = this.questions.questions;
-    this.questionsLength = this.questions.length;
+  getQuestion(id) {
+    return this.questions.find(q => q.question_id == id);
   }
 
-  
-  //save for later
-  SaveLater() {
+  // save for later
+  saveLater() {
     console.log(JSON.stringify(this.formGroup.value));
   }
 
@@ -73,17 +52,17 @@ export class SurveyQuestionsComponent implements OnInit {
    * method called when next button clicked on a step
    * @params step which is current step
    */
-  nextClick(step) {
-    let currentStep = this.formGroup.controls[step]
-    if(currentStep.invalid) {
+  nextClick() {
+    const currentStep = this.formGroup.controls[0];
+    if (currentStep.invalid) {
       this.invalid = true;
-      window.scroll(0,0);
+      window.scroll(0, 0);
     } else {
       this.invalid = false;
     }
   }
 
-  //submit form data if valid
+  // submit form data if valid
 
   onSubmit() {
     if (this.formGroup.valid) {
@@ -94,7 +73,7 @@ export class SurveyQuestionsComponent implements OnInit {
       this.invalid = false;
     } else {
       this.invalid = true;
-      window.scroll(0,0);
+      window.scroll(0, 0);
     }
   }
 }
