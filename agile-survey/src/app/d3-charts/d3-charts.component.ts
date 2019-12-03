@@ -10,8 +10,8 @@ import { SurveyService } from '../survey.service'
 })
 export class D3ChartsComponent implements OnInit {
 
-  vWidth = 300;  // <-- 1
-  vHeight = 300;
+  vWidth = 500;  // <-- 1
+  vHeight = 500;
   vRadius = Math.min(this.vWidth, this.vHeight) / 2;  // < -- 2
 
   g: any;
@@ -24,7 +24,8 @@ export class D3ChartsComponent implements OnInit {
   constructor(private surveyService: SurveyService) { }
 
   ngOnInit() {
-    let vColor = d3.scaleOrdinal(d3['schemeCategory20b'].slice(4)); 
+
+    const vData = this.surveyService.getChartData();
 
     //Method Chaining & the HTML
     this.g = d3.select('svg')  // <-- 1
@@ -48,26 +49,50 @@ export class D3ChartsComponent implements OnInit {
       .innerRadius(function (d) { return d['y0'] })
       .outerRadius(function (d) { return d['y1'] });
 
+      this.drawSunburst();
+  }
+  drawSunburst() {
+    const data = this.surveyService.getChartData();
+    const vColor = d3.scaleOrdinal(d3['schemeCategory20b'].slice(4)); 
     //Connect Layout & Data
-    this.vRoot = d3.hierarchy(this.surveyService.getChartData())  // <--1
+    this.vRoot = d3.hierarchy(data)  // <--1
       .sum(function (d) { return d['size'] });  // <-- 2
     this.vNodes = this.vRoot.descendants();  // <--3
     
 
     //Update Pattern
-    this.vSlices = this.g.selectAll('path') // <-- 1
+    this.vSlices = this.g.selectAll('g') // <-- 1
       .data(this.vNodes)  // <-- 2
       .enter()  // <-- 3
-      .append('path'); // <-- 4    
+      .append('g'); // <-- 4    
 
     this.vLayout(this.vRoot);  // <--4
     
-    this.vSlices.filter(function(d) { return d.parent })  // <-- 1
-    .attr('d', this.vArc)  // <-- 2
-    .style('stroke', '#fff')  // <-- 3
-    .style('fill', function (d) {  // <-- 4
-      return vColor((d.children ? d : d.parent).data.id)
-      });
+    // Draw on screen
+    this.vSlices.append('path')
+    .attr('display', function (d) { return d.depth ? null : 'none'; })
+    .attr('d', this.vArc)
+    .style('stroke', '#fff')
+    .style('fill', function (d) { return vColor((d.children ? d : d.parent).data.id); });
+
+    const _self = this;
+    
+    // Add text
+    this.vSlices.append('text')
+    .filter(function(d) { return d.parent; })
+    .attr('transform', function(d) {
+        return 'translate(' + _self.vArc.centroid(d) + ')rotate(' + _self.computeTextRotation(d) + ')'; })
+    .attr('dx', '-20')
+    .attr('dy', '.5em')
+    .text(function(d) { return d.data.id });
+  }
+
+  computeTextRotation(d) {
+    const angle = (d.x0 + d.x1) / Math.PI * 90;
+
+    // Avoid upside-down labels; labels as rims
+    return (angle < 120 || angle > 270) ? angle : angle + 180;
+    //return (angle < 180) ? angle - 90 : angle + 90;  // labels as spokes
   }
 
 }

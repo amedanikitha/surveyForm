@@ -29,6 +29,10 @@ $agile-survey-theme: mat-light-theme($agile-survey-primary, $agile-survey-accent
 /* You can add global styles to this file, and also import other style files */
 @import 'variables.scss';
 
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
 .wrapper {
     padding: 3% 10%;
 }
@@ -38,6 +42,10 @@ $agile-survey-theme: mat-light-theme($agile-survey-primary, $agile-survey-accent
 }
 .text-20 {
     font-size: 20px;
+}
+.primary-text {
+    color: $primary;
+    font-weight: bold;
 }
 .no-margin {
     margin: 0px;
@@ -95,5 +103,18 @@ $agile-survey-theme: mat-light-theme($agile-survey-primary, $agile-survey-accent
     text-align: center;
     font-weight: bold;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+//styling ngbootstrap for timer
+.ngb-tp {
+    position: absolute !important;
+    left: 121% !important;
+    bottom: -64% !important;
+}
+.ngb-tp-input {
+    height: 15px;
+    line-height: 1px;
+    padding: 12px;
+}
+.btn {
+    padding: 3px;
+    line-height: 1px;
+}

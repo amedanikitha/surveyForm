@@ -1,19 +1,23 @@
 <div class="row m-3">
-  <div class="col-md-12 surveyWrapper">
+  <div class="col-md-12 surveyWrapper" *ngIf="questions">
+    <!-- <p *ngIf="!questions">Network error. Please try again</p>
+    <ng-template #loading>
+      Loading..
+    </ng-template> -->
     <form [formGroup]="formGroup">
       <!--Dynamic stepper which adjusts based on total number of questions-->
-      <mat-horizontal-stepper linear #stepper *ngIf="questions">
+      <mat-horizontal-stepper linear #stepper >
         <ng-template matStepperIcon="edit">
           <mat-icon>done_outline</mat-icon>
         </ng-template>
-        <mat-step *ngFor="let questionGroup of questionGroups; let i=index;" formGroupName="{{i}}"
+        <mat-step *ngFor="let questionGroup of questionGroups; let i=index; last as isLast" formGroupName="{{i}}"
           [stepControl]="questionGroup">
           <p *ngIf="invalid" class="error-message">*All fields are mandatory</p>
           <!--grouping all the questions in a list-->
           <ul class="questions-list">
             <li *ngFor="let control of questionGroup.controls | keyvalue">
 
-              <div *ngIf="getQuestion(control.key).question_type==1">
+              <div *ngIf="getQuestion(control.key).question_type_id==1">
                 <!--displaying options-->
                 <div>
                   {{control.key}}. {{getQuestion(control.key).question}}
@@ -38,7 +42,7 @@
                 </mat-radio-group>
               </div>
               <!--textarea if question type is 2-->
-              <div *ngIf="getQuestion(control.key).question_type==2">
+              <div *ngIf="getQuestion(control.key).question_type_id==2">
                 <div>
                   {{control.key}}. {{getQuestion(control.key).question}}
                 </div>
@@ -46,7 +50,7 @@
                   formControlName="{{control.key}}"></textarea>
               </div>
               <!--scale if question type is 3-->
-              <div *ngIf="getQuestion(control.key).question_type==3">
+              <div *ngIf="getQuestion(control.key).question_type_id==3">
                 <div>
                   {{control.key}}. {{getQuestion(control.key).question}}
                 </div>
@@ -69,7 +73,8 @@
           <div class="row">
             <div class="col-md-12 text-right">
               <button mat-button class="app-link m-3" (click)="saveLater()">Save for Later</button>
-              <button mat-button matStepperNext class="app-button" (click)="nextClick()">Next</button>
+              <button *ngIf="isLast"  mat-button matStepperNext class="app-button" (click)="onSubmit()">Submit</button>
+              <button *ngIf="!isLast" mat-button matStepperNext class="app-button" (click)="nextClick()">Next</button>
             </div>
           </div>
         </mat-step>

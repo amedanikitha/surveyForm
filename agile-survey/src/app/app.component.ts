@@ -1,7 +1,8 @@
 
-import { Component } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { getLocaleTimeFormat } from '@angular/common';
 import { Router } from '@angular/router';
+import { SurveyService } from './survey.service';
 
 @Component({
   selector: 'app-root',
@@ -12,8 +13,9 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'agile-survey';
   percentage = 25;
-  surveytype = 'Agile Metric Survey';
-  surveyid:number = 1;
+  surveytype: string; 
+  questions: any;
+  surveyid:number;
   managerName = 'Sudip';
   timeLeft;
   formattedtimeLeft;
@@ -24,12 +26,20 @@ export class AppComponent {
   seconds;
   radius = 10;
 
-constructor(public router: Router) {
+constructor(public router: Router, private surveyService: SurveyService) {
   
 }
 ngOnInit(){
   this.timeLeft = new Date("Dec 4, 2019 00:00:00").getTime() - new Date().getTime();
   this.getTimer()
+
+  this.surveyService.getQuestions()
+    .subscribe(questions => {
+      this.questions = questions;
+      this.surveyid = this.questions[0].survey;
+  });
+
+  
 }
 /**
  * Method will run the timer

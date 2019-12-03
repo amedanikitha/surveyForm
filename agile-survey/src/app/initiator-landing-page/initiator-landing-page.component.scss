@@ -1,7 +1,41 @@
+@import '../../variables.scss';
+
 .material-search {
     position: absolute;
     top: 0px;
     right: -5px;
     color: gray;
     font-size: 25px;
+}
+.timePick{
+    border-bottom: 1px solid gray;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    width: 5%;
+    margin: 2%;
+}
+.groups {
+    margin: 3%;
+    width: 100%;
+    padding: 0;
+    background: $primary;
+    border: 1px solid $primary;
+    text-align: center;
+    line-height: 2;
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 5px 5px 5px grey;
+}
+.groups li {
+    list-style: none;
+    color: $secondary;
+    background: white;
+    border-top: 1px solid $primary;
+}
+
+.groups:hover {
+    background: $lightgreen;
+    cursor: pointer;
 }

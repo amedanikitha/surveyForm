@@ -1,13 +1,13 @@
 export const vData = {
-    'id': 'TOPICS', 'children': [{
-        'id': 'Topic A',
-        'children': [{'id': 'Sub A1', 'size': 4}, {'id': 'Sub A2', 'size': 4}]
+    'id': 'Survey', 'children': [{
+        'id': 'Question 1',
+        'children': [{'id': 'Agree', 'size': 5}, {'id': 'Disagree', 'size': 4}]
     }, {
-        'id': 'Topic B',
-        'children': [{'id': 'Sub B1', 'size': 3}, {'id': 'Sub B2', 'size': 3}, 
-	        {'id': 'Sub B3', 'size': 3}]
+        'id': 'Question 2',
+        'children': [{'id': 'Agree', 'size': 3}, {'id': 'Disgree', 'size': 3}, 
+	        {'id': 'Neutral', 'size': 3}]
     }, {
-        'id': 'Topic C',
-        'children': [{'id': 'Sub A1', 'size': 4}, {'id': 'Sub A2', 'size': 4}]
+        'id': 'Question 3',
+        'children': [{'id': 'Agree', 'size': 4}, {'id': 'Disagree', 'size': 4}]
     }]
   };
