@@ -9,10 +9,11 @@ import { vData } from '../assets/d3-mock-data';
   providedIn: 'root'
 })
 export class SurveyService {
-
-  private surveyApiUrl = 'api/questions';//'http://10.10.105.35:8000/employees'; //endpoint URL
+  private surveyApiUrl =  'http://10.10.106.67:8000/questions';  //'api/questions'; //endpoint URL
   private submitSurveyUrl = 'http://api/submit/survey'; // Submit URL
-  private chartApiUrl = 'api/chartData'; // chart URL
+  private submitlaunchSurveyUrl = 'http://10.10.106.67:8000/surveyscheduling'; // ' Launch Submit URL
+  private chartApiUrl =   'http://10.10.106.67:8000/pod_matrix'; //'api/chartData' //chart URL
+  private barchartApiUrl = 'http://10.10.106.67:8000/organization_matrix' // chart URL
 
   constructor(private http: HttpClient) { }
   
@@ -21,15 +22,35 @@ export class SurveyService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json'})
   };
 
-  //fetching the survey questions
+  /**
+   * fetching the survey details including questions (get service call)
+   * @param null 
+   */
   getQuestions(): Observable<any>  {
     // return QUESTIONS;
    return this.http.get<any>(this.surveyApiUrl).pipe(
       catchError(this.handleError<any>('getQuestions', []))
-    ); //get service call
+    ); 
   }
 
-  //post call
+  /** 
+   * post call for launching survey by organizer
+   * @param post data
+   */ 
+  submitlaunchSurvey(data): Observable<any> {
+    console.log(data); 
+    return this.http.post(this.submitlaunchSurveyUrl, data, this.httpOptions).pipe(
+      catchError(error => {
+        console.log("Caught error while submiting survey");
+        return of(null);
+      })
+    );
+  }
+
+  /** 
+   * post call for submitting survey after completing survey
+   * @params post data
+   */
   submitSurvey(data) {
     console.log(data);  
     /*return this.http.post(this.submitSurveyUrl, data, this.httpOptions).pipe(
@@ -47,6 +68,12 @@ export class SurveyService {
 
   getChartJSData(): Observable<any> {
     return this.http.get<any>(this.chartApiUrl).pipe(
+      catchError(this.handleError<any>('getChart', []))
+    ); 
+  }
+
+  getbarChartData(): Observable<any> {
+    return this.http.get<any>(this.barchartApiUrl).pipe(
       catchError(this.handleError<any>('getChart', []))
     ); 
   }

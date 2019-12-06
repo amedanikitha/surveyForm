@@ -1,5 +1,11 @@
 @import '../../variables.scss';
 
+/*styling survey top header*/
+.survey-info {
+  margin: 2% 0;
+}
+
+/*styling radio buttons*/
 .options {
     margin: 0 0 0 15px;
     display: block;
@@ -9,7 +15,6 @@
 }
 
 /*Styles for scale options*/
-
 $border: double 3px $secondary;
 .rating_scale {
   display: block !important;

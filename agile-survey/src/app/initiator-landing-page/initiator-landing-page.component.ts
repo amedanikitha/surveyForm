@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SurveyService } from '../survey.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-initiator-landing-page',
@@ -9,20 +11,27 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 export class InitiatorLandingPageComponent implements OnInit {
 
   formGroup: FormGroup;
-  surveys: any;
+  surveys = [];
   participants: any;
   showIndividuals: boolean;
   showGroups: boolean;
   minDate: Date;
   selectedGroup: string = '';
+  response: any;
+  managerName = 'Sudip';
+  surveyInfo: any;
+  uniqueArray = [];
+  surveyTypeId: any;
 
    /** Returns a FormArray with the name 'formArray'. */
    get formArray(): AbstractControl | null { return this.formGroup.get('formArray'); }
 
-  constructor(private _formBuilder: FormBuilder) { }
+  constructor(private _formBuilder: FormBuilder, private surveyService: SurveyService, private datePipe: DatePipe) { }
   
 
   ngOnInit() {
+
+    this.getQuestions(); // this will call service end point
 
     this.showIndividuals = false;
     this.showGroups = false;
@@ -48,11 +57,11 @@ export class InitiatorLandingPageComponent implements OnInit {
     });
 
     //load dropdownlist with survey type
-    this.surveys= [
-      {value: 'Agile Metrics Survey', viewValue: 'Agile Metrics Survey'},
-      {value: 'Retrospective Survey', viewValue: 'Retrospective Survey'},
-      {value: 'General Survey', viewValue: 'General Survey'}
-    ];
+    /*this.surveys= [
+      {value: 1, viewValue: 'Agile Metrics Survey'},
+      {value: 2, viewValue: 'Retrospective Survey'},
+      {value: 3, viewValue: 'General Survey'}
+    ];*/
 
     //load particpants
     this.participants= [
@@ -89,6 +98,29 @@ export class InitiatorLandingPageComponent implements OnInit {
     this.selectedGroup += this.selectedGroup ? ',' + groupName : groupName;
   }
 
+  /**
+   * get survey information
+   * @param null
+   */
+  getQuestions() {
+    const duplicateArray = [];
+    this.surveyService.getQuestions()
+    .subscribe(surveyInfo => 
+      {
+        this.surveyInfo = surveyInfo
+        for(let i =0; i < surveyInfo.length; i++ ) {
+          duplicateArray.push(this.surveyInfo[i].survey_type_id, this.surveyInfo[i].survey_type);
+          this.uniqueArray = [...new Set(duplicateArray)];
+          if (i == this.surveyInfo.length-1) {
+            for(let j =0; j < this.uniqueArray.length/2; j++) {
+              this.surveys.push({value: this.uniqueArray[2*j], viewValue: this.uniqueArray[(2*j)+1]})
+            }
+          }
+        }
+        console.log(this.surveys);
+      });
+  }
+
   
   /**
    * restricting end date to be higher than start date
@@ -106,6 +138,11 @@ export class InitiatorLandingPageComponent implements OnInit {
     if (this.formGroup.valid) {
       console.log(this.formGroup.value)
       this.formatPostData(this.formGroup.value)
+      let initiatorPostReq = this.formatPostData(this.formGroup.value);
+      this.surveyService.submitlaunchSurvey(initiatorPostReq).subscribe(data => {
+        this.response = data;
+        this.formGroup.reset();
+      });
     }
   }
   /**
@@ -124,9 +161,14 @@ export class InitiatorLandingPageComponent implements OnInit {
 
       let postRequest = [];
       let surveyResponse = {};
-      surveyResponse['survey_id'] = 1;
-      surveyResponse['start_date'] = values[4];
-      surveyResponse['end_date'] = values[5];
+
+      surveyResponse['survey_type_id'] = values[0];
+      this.surveyTypeId = values[0];
+      const formattedStartDate = values[4];
+      const formattedEndDate = values[5];
+      surveyResponse['survey_start_date'] = this.datePipe.transform(formattedStartDate,"yyyy-MM-dd HH:MM:SS");
+      surveyResponse['survey_end_date'] = this.datePipe.transform(formattedEndDate,"yyyy-MM-dd HH:MM:SS");
+      surveyResponse['organizer_id'] = 1;
       surveyResponse['Partcipants'] = [];
       for(let i = 0; i < keys.length; i++) {
         if(keys[i]=="selectParticipants") {
@@ -137,7 +179,7 @@ export class InitiatorLandingPageComponent implements OnInit {
         }
       }
       postRequest.push(surveyResponse);
-      console.log(JSON.stringify(postRequest));
+      return postRequest;
   }
 
 }

@@ -1,5 +1,5 @@
 <div class="landingPage surveyWrapper">
-    <label class="text-center d-block text-20 primary-text p-3">Follow the Simple steps listed below to create and launch survey</label>
+    <label class="text-center d-block text-20 primary-text p-3">Welcome {{managerName}}, follow the Simple steps listed below to create and launch survey</label>
     <div class="steps">
         <form [formGroup]="formGroup">
             <mat-vertical-stepper #stepper formArrayName="formArray" [linear]="true">
@@ -46,9 +46,6 @@
                     <div class="row">
                         <div class="col-md-3">
                             <ul class="groups" (click)="populateGroupName('Group A')"> Group A
-                                <li>Rajesh</li>                        
-                                <li>Nishanth</li>
-                                <li>Sudip</li>
                                 <li>Arif</li>
                                 <li>Hardik</li>
                                 <li>Nikitha</li>
@@ -92,8 +89,15 @@
                         <!--<ngb-timepicker formControlName="endTime"></ngb-timepicker>-->
                     </mat-form-field>
                     <div class="text-center">  
-                        <button mat-button class="app-button w-25" (click)="onSubmit()">Schedule Survey</button>
+                        <button mat-button matStepperNext class="app-button w-25" (click)="onSubmit()">Schedule Survey</button>
                     </div>  
+            </mat-step>
+            <mat-step>
+                <div class="col-md-12 text-center">
+                    <i class="material-icons thankyouIcon">thumb_up_alt</i><br>
+                    <label>The below link will be sent to users of survey at scheduled time.</label>
+                    <a [routerLink]="['/survey', surveyTypeId]" class="d-block text-center">Link to take Survey</a>
+                </div>
             </mat-step>
         </mat-vertical-stepper>
         </form>

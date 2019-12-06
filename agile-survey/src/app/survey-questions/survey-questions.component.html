@@ -1,12 +1,18 @@
 <div class="row m-3">
-  <div class="col-md-12 surveyWrapper" *ngIf="questions">
-    <!-- <p *ngIf="!questions">Network error. Please try again</p>
-    <ng-template #loading>
-      Loading..
-    </ng-template> -->
+  <div class="survey-info col-md-12"> 
+      <a class="app-link text-right d-inline-block w-100" [routerLink]="['/launchsurvey']">Configure Survey</a>
+      <label class="text-center w-100 text-20">Welcome to <span class="primary-text">{{surveyType}} -
+          {{surveyId}} (ID)</span></label>
+      <label class="text-center w-100 text-20">This survey is assigned by <span
+          class="primary-text">{{surveyOrganizer}}</span></label>
+  </div>
+  <ng-template #loading>
+    Loading..
+  </ng-template>
+  <div class="col-md-12 surveyWrapper" *ngIf="questions; else loading">
     <form [formGroup]="formGroup">
       <!--Dynamic stepper which adjusts based on total number of questions-->
-      <mat-horizontal-stepper linear #stepper >
+      <mat-horizontal-stepper  #stepper >
         <ng-template matStepperIcon="edit">
           <mat-icon>done_outline</mat-icon>
         </ng-template>
@@ -15,12 +21,11 @@
           <p *ngIf="invalid" class="error-message">*All fields are mandatory</p>
           <!--grouping all the questions in a list-->
           <ul class="questions-list">
-            <li *ngFor="let control of questionGroup.controls | keyvalue">
-
+            <li *ngFor="let control of questionGroup.controls | keyvalue; let j=index;">
               <div *ngIf="getQuestion(control.key).question_type_id==1">
                 <!--displaying options-->
                 <div>
-                  {{control.key}}. {{getQuestion(control.key).question}}
+                  {{j+1}}. {{getQuestion(control.key).question}}
                 </div>
                 <!--displaying options of the questions only if options are not null-->
                 <mat-radio-group aria-label="Select an option" name="{{control.key}}" formControlName="{{control.key}}">
@@ -44,7 +49,7 @@
               <!--textarea if question type is 2-->
               <div *ngIf="getQuestion(control.key).question_type_id==2">
                 <div>
-                  {{control.key}}. {{getQuestion(control.key).question}}
+                  {{j+1}}. {{getQuestion(control.key).question}}
                 </div>
                 <textarea matInput type="text" class="app-textarea" maxlength="250"
                   formControlName="{{control.key}}"></textarea>
@@ -52,7 +57,7 @@
               <!--scale if question type is 3-->
               <div *ngIf="getQuestion(control.key).question_type_id==3">
                 <div>
-                  {{control.key}}. {{getQuestion(control.key).question}}
+                  {{j+1}}. {{getQuestion(control.key).question}}
                 </div>
                 <div class="rating_scale">
                   <label><input type="radio" [name]="control.key" value="1" class="scale-options"
@@ -83,6 +88,7 @@
           <div class="col-md-12 text-center">
             <i class="material-icons thankyouIcon">thumb_up_alt</i><br>
             <label>Thank you for your feedback!</label>
+            <a class="app-link text-center d-inline-block w-100" [routerLink]="['/retro']">View Survey results</a>
           </div>
         </mat-step>
       </mat-horizontal-stepper>

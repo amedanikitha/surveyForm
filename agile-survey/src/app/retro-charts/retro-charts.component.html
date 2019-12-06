@@ -1,0 +1,44 @@
+<h1>{{title}}</h1>
+<div class="row">
+    <div class="col-md-4" style="padding-top: 33px">
+        <label class="text-primary d-inline-block">Survey: </label> 
+        <br>
+        <label class="d-inline-block"> Sprint Retro Survey</label>
+        <br />
+        <label class="text-primary d-inline-block">Metric: </label> 
+        <label class="d-inline-block">This metric tells you how morale is in your team. Team morale is more reliable and stable metric</label>
+        <label class="text-primary d-inline-block">Participants: </label> 
+        <br>
+        <label class="d-inline-block"> 4 completed out of 24</label>
+    </div>
+
+    <div class="text-center col-md-4">
+        <fusioncharts
+            type="AngularGauge"
+            [dataSource]="dataSource">
+        </fusioncharts>
+    </div>
+    <div class="col-md-4 text-right" style="padding-top: 55px">
+        <label class="text-primary text-right d-inline-block w-100">What the colors mean?</label>
+        <br>
+        <label><b>Green</b> means you are doing fine and your score is within the 25% of highest scoring teams and individuals</label>
+        <label><b>Yellow</b> means you are doing Okay</label>
+        <label><b>Red</b> means that there's work to do. </label>
+    </div>
+</div>
+<br />
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div style="display: block">
+        <canvas baseChart 
+            [datasets]="barChartData" 
+            [labels]="barChartLabels" 
+            [options]="barChartOptions"
+            [legend]="barChartLegend" 
+            [chartType]="barChartType"
+            [colors]="barChartColors" >
+        </canvas>
+        </div>
+    </div>
+</div>

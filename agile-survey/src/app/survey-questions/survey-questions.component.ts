@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SurveyService } from '../survey.service';
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-survey-questions',
@@ -15,31 +16,60 @@ export class SurveyQuestionsComponent implements OnInit {
   questionGroups: FormGroup[] = [];
   invalid = false;
   response: any;
+  currentSurveyId: string;
+  surveyId: number;
+  surveyType: string;
+  surveyOrganizer: string;
+  currentSurvey = [];
 
-  constructor(private surveyService: SurveyService) { }
+  constructor(private surveyService: SurveyService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     
     // Get all questions from the service
     //this.questions = this.surveyService.getQuestions()[0];
-    
+    this.currentSurveyId = this.route.snapshot.paramMap.get("id")
     this.getQuestions(); // this will call service end point
+
+    /**
+     * registering route
+     * @params surveyid
+     */
+    this.route.paramMap.subscribe(params => {
+      this.currentSurveyId = params.get("id")
+    })
     
   }
 
+  /**
+   * get call to fetch questions from server
+   * @param null
+   */
   getQuestions(): void {
     this.surveyService.getQuestions()
     .subscribe(questions => {
       this.questions = questions;
-  
+      
+      //display survey based on url
+      for (let j = 0; j < this.questions.length; j++) {
+        if(this.questions[j].survey_type_id== this.currentSurveyId) 
+          this.currentSurvey.push(this.questions[j])
+      }
+      
+      // get questions for dedicated survey type based on url
+      this.questions = this.currentSurvey;
+      this.surveyId = this.questions[0].survey_type_id;
+      this.surveyType = this.questions[0].survey_type;
+      this.surveyOrganizer = 'Sudip'
+
       // Define number of questions on each page
-      const numQuestions = 5;
+      const numQuestions = 9;
       // Create a group of inputs, with each group containing 5 questions
       const formGroup = {};
       if(this.questions) {
-        for (let i = 0; i <= questions.length / numQuestions; i++) {
+        for (let i = 0; i < this.questions.length / numQuestions; i++) {
           const controls = {};
-          for (let j = i * numQuestions; j < Math.min((i * numQuestions) + numQuestions, questions.length); j++) {
+          for (let j = i * numQuestions; j < Math.min((i * numQuestions) + numQuestions, this.questions.length); j++) {
             controls[this.questions[j].question_id] = this.questions[j].question_type_id === 2 ? new FormControl() : new FormControl('', Validators.required);
           }
           this.questionGroups.push(new FormGroup(controls));
@@ -52,6 +82,7 @@ export class SurveyQuestionsComponent implements OnInit {
 
   getQuestion(id) {
     return this.questions.find(q => q.question_id == id);
+    
   }
 
   // save for later
@@ -106,7 +137,7 @@ export class SurveyQuestionsComponent implements OnInit {
         let questionResponse = {};
         //set the keys and values
         questionResponse['question_id'] = keys[i];
-        questionResponse['survey_id'] = this.questions[i].survey;    
+        questionResponse['survey_type_id'] = this.questions[i].survey_type_id;    
         if (this.questions[i].question_type_id===2) {
           questionResponse['response_text'] = values[i];
         } else {

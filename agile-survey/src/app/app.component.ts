@@ -13,10 +13,8 @@ import { SurveyService } from './survey.service';
 export class AppComponent {
   title = 'agile-survey';
   percentage = 25;
-  surveytype: string; 
   questions: any;
-  surveyid:number;
-  managerName = 'Sudip';
+  endDate: Date;
   timeLeft;
   formattedtimeLeft;
   myProp;
@@ -30,13 +28,12 @@ constructor(public router: Router, private surveyService: SurveyService) {
   
 }
 ngOnInit(){
-  this.timeLeft = new Date("Dec 4, 2019 00:00:00").getTime() - new Date().getTime();
+  this.timeLeft = new Date("Dec 6, 2019 00:00:00").getTime() - new Date().getTime();
   this.getTimer()
 
   this.surveyService.getQuestions()
     .subscribe(questions => {
       this.questions = questions;
-      this.surveyid = this.questions[0].survey;
   });
 
   
@@ -49,7 +46,7 @@ ngOnInit(){
 getTimer() {
   setInterval(() => {
     if(this.timeLeft > 0) {
-      this.timeLeft = new Date("Dec 4, 2019 00:00:00").getTime() - new Date().getTime();
+      this.timeLeft = new Date("Dec 6, 2019 00:00:00").getTime() - new Date().getTime();
       this.days = Math.floor(this.timeLeft / (1000 * 60 * 60 * 24));
       this.hours = Math.floor((this.timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       this.minutes = Math.floor((this.timeLeft % (1000 * 60 * 60)) / (1000 * 60));
@@ -57,7 +54,7 @@ getTimer() {
       this.formattedtimeLeft = this.days + "d " + this.hours + "h "
       + this.minutes + "m " + this.seconds + "s ";
     } else {
-      this.timeLeft = "Expired";
+      this.formattedtimeLeft = "Expired";
     }
   }, 1000);
 }

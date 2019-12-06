@@ -1,10 +1,119 @@
-<div class="chart-wrapper" *ngIf = "chartData">
-    <canvas baseChart 
-    [data]="pieChartData" 
-    [labels]="pieChartLabels" 
-    [chartType]="pieChartType"
-    [options]="pieChartOptions"
-    [plugins]="pieChartPlugins"
-    [legend]="pieChartLegend">
-    </canvas>
+<div class="row">
+    <div class="col-md-12">
+        <label class="text-primary d-inline-block w-25">Survey:</label> 
+        <label class="d-inline-block w-25">Agile Metrics Survey</label>
+        <br>
+        <label class="text-primary d-inline-block w-25">Metric:</label> 
+        <label class="d-inline-block w-25">Team Morale</label>
+    </div>
+    <mat-accordion class="m-3 w-100">
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <label class="text-primary text-20">Label Definition:</label>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="row">
+                <div class="col-md-6">
+                    <ul>Ad-hoc Agile –
+                        <li> Agile is either not used or used inconsistently across organization</li>
+                        <li>Variable quality</li>
+                        <li>Predominantly manual testing</li>
+                        <li>Success achieved through heroic individual efforts</li>
+                    </ul>
+                    <ul>Doing Agile –
+                        <li>Team Start to exhibit some consistent Agile habits</li>
+                        <li>Knowledge sharing begins to occur across teams</li>
+                        <li>Agile tools and practice is common</li>
+                        <li>Quality Improves</li>
+                    </ul>
+                    <ul>Ad-hoc Agile –
+                        <li> Agile is either not used or used inconsistently across organization</li>
+                        <li>Variable quality</li>
+                        <li>Predominantly manual testing</li>
+                        <li>Success achieved through heroic individual efforts</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul>Being Agile –
+                        <li>Most of the projects portfolio is Agile</li>
+                        <li>Role and responsibility are consistent across teams</li>
+                        <li>Disciplined, repeatable processes are in place with high quality results</li>
+                        <li>Test and build automation is highly enabled</li>
+                    </ul>
+                    <ul>Culturally Agile –
+                        <li>Lean Agile are part of the organizational culture</li>
+                        <li>Perfecting waste reduction, lack of overburden and inefficiency and a smooth flow of delivery</li>
+                        <li>Sustainable pace of innovation</li>
+                        <li>Continuous organizational learning and optimization of work process</li>
+                    </ul>
+                </div>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+    
+    <div class="col-md-12">
+        <div class="chart-wrapper" *ngIf="chartData">
+            <canvas baseChart *ngFor="let chart of chartData" class="col-md-6 d-inline-block"
+                [data]="chart.pieChartData" 
+                [labels]="chart.pieChartLabels" 
+                [chartType]="chartType"
+                [legend]="pieChartLegend"
+                [options]="pieChartOptions">
+            </canvas>
+        </div>
+    </div>
 </div>
+
+ <!-- <canvas baseChart
+                [data]="pieChartData1" 
+                [labels]="pieChartLabels1" 
+                [chartType]="pieChartType1"
+                [options]="pieChartOptions1"
+                [plugins]="pieChartPlugins1"
+                [legend]="pieChartLegend1">
+            </canvas>
+            <label>Agile Maturity Survey taken by POD 1</label>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="chart-wrapper" *ngIf = "chartData2">
+            <canvas baseChart 
+                [data]="pieChartData2" 
+                [labels]="pieChartLabels2" 
+                [chartType]="pieChartType2"
+                [options]="pieChartOptions2"
+                [plugins]="pieChartPlugins2"
+                [legend]="pieChartLegend2">
+            </canvas>
+            <label>Agile Maturity Survey taken by POD 2</label>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="chart-wrapper" *ngIf = "chartData1">
+
+            <canvas baseChart
+                [data]="pieChartData1" 
+                [labels]="pieChartLabels1" 
+                [chartType]="pieChartType1"
+                [options]="pieChartOptions1"
+                [plugins]="pieChartPlugins1"
+                [legend]="pieChartLegend1">
+            </canvas>
+            <label>Agile Maturity Survey taken by POD 3</label>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="chart-wrapper" *ngIf = "chartData1">
+
+            <canvas baseChart
+                [data]="pieChartData1" 
+                [labels]="pieChartLabels1" 
+                [chartType]="pieChartType1"
+                [options]="pieChartOptions1"
+                [plugins]="pieChartPlugins1"
+                [legend]="pieChartLegend1">
+            </canvas>
+            <label class="text-center d-block">Agile Maturity Survey taken by POD 4</label>
+        </div> -->
+
